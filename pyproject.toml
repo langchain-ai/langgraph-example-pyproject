@@ -5,6 +5,11 @@ description = "Example LangGraph project for deployment to LangGraph Cloud"
 authors = [
     "langchain-ai"
 ]
+packages = [
+    { include = "langchain-example-pyproject" },
+]
+
+
 
 [tool.poetry.dependencies]
 python = ">=3.9.0,<3.13"
