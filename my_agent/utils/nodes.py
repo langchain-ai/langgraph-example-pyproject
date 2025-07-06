@@ -9,7 +9,7 @@ def _get_model(model_name: str):
     if model_name == "openai":
         model = ChatOpenAI(temperature=0, model_name="gpt-4o")
     elif model_name == "anthropic":
-        # Claude Sonnet 4 (latest, July 2025)
+        # Claude Sonnet 4 (latest)
         model = ChatAnthropic(temperature=0, model_name="claude-sonnet-4-20250514")
     elif model_name == "anthropic-opus":
         # Claude Opus 4 (premium)
@@ -39,7 +39,8 @@ system_prompt = """Be a helpful assistant"""
 def call_model(state, config):
     messages = state["messages"]
     messages = [{"role": "system", "content": system_prompt}] + messages
-    model_name = config.get('configurable', {}).get("model_name", "anthropic")
+    # Default to Opus 4 for PM unless overridden
+    model_name = config.get('configurable', {}).get("model_name", "anthropic-opus")
     model = _get_model(model_name)
     response = model.invoke(messages)
     return {"messages": [response]}
