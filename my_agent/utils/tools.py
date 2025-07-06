@@ -3,9 +3,13 @@
 # 1. Internal Document/Spec Search (for docs, specs, BOM, compliance, etc.)
 from langchain_community.tools.file_management import ReadFileTool
 
+# 2. GitHub Pull Request Tool (best practice: agent submits doc/plan changes as PRs for review)
+from my_agent.tools.github_tools import GitHubPRTool
+
 # --- Tool List ---
 tools = [
-    ReadFileTool(root_dir="./docs"),   # Change path if your docs live elsewhere
+    ReadFileTool(root_dir="./docs"),   # For project source of truth/doc retrieval
+    GitHubPRTool(repo_name="Librascale83/project-taile", base_branch="main"),  # Agent PR to your repo
 ]
 
 # --- Expansion Instructions for PMs (comment for maintainers) ---
