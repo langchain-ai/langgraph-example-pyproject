@@ -9,26 +9,30 @@ def _get_model(model_name: str):
     if model_name == "openai":
         model = ChatOpenAI(temperature=0, model_name="gpt-4o")
     elif model_name == "anthropic":
+        # Claude Sonnet 4 (latest, July 2025)
         model = ChatAnthropic(temperature=0, model_name="claude-sonnet-4-20250514")
     elif model_name == "anthropic-opus":
+        # Claude Opus 4 (premium)
         model = ChatAnthropic(temperature=0, model_name="claude-opus-4-20250514")
     else:
         raise ValueError(f"Unsupported model type: {model_name}")
     model = model.bind_tools(tools)
     return model
 
+# --- Robust should_continue that can't crash from NoneType, empty, or dict/object differences ---
 def should_continue(state):
-    messages = state["messages"]
+    messages = state.get("messages", [])
+    if not messages:
+        return "end"
     last_message = messages[-1]
-    # Works for dict or object; avoids NoneType errors
+    # Accept both dict (API msg) and object (LC msg)
     if isinstance(last_message, dict):
-        tool_calls = last_message.get("tool_calls", None)
+        tool_calls = last_message.get("tool_calls")
     else:
         tool_calls = getattr(last_message, "tool_calls", None)
     if not tool_calls:
         return "end"
-    else:
-        return "continue"
+    return "continue"
 
 system_prompt = """Be a helpful assistant"""
 
