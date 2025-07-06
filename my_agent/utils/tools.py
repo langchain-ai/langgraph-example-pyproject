@@ -4,12 +4,14 @@
 from langchain_community.tools.file_management import ReadFileTool
 
 # 2. GitHub Pull Request Tool (best practice: agent submits doc/plan changes as PRs for review)
-from my_agent.tools.github_tools import GitHubPRTool
+from my_agent.utils.tools.github_tools import GitHubPRTool
 
 # --- Tool List ---
 tools = [
-    ReadFileTool(root_dir="./docs"),   # For project source of truth/doc retrieval
-    GitHubPRTool(repo_name="Librascale83/project-taile", base_branch="main"),  # Agent PR to your repo
+    # For project source of truth/doc retrieval
+    ReadFileTool(root_dir="./docs"),
+    # For agent-generated PRs to your GitHub repo (safe workflow, no direct pushes)
+    GitHubPRTool(repo_name="Librascale83/project-taile", base_branch="main"),
 ]
 
 # --- Expansion Instructions for PMs (comment for maintainers) ---
@@ -18,11 +20,11 @@ tools = [
 # - Add to the `tools` list above
 #
 # Examples for future expansion:
-# from my_agent.tools.code_search import CodeSearchTool
-# from my_agent.tools.bom_lookup import BOMLookupTool
-# from my_agent.tools.task_manager import TaskManagerTool
-# from my_agent.tools.compliance_reference import ComplianceReferenceTool
-# from my_agent.tools.notify import NotifyTool
+# from my_agent.utils.tools.code_search import CodeSearchTool
+# from my_agent.utils.tools.bom_lookup import BOMLookupTool
+# from my_agent.utils.tools.task_manager import TaskManagerTool
+# from my_agent.utils.tools.compliance_reference import ComplianceReferenceTool
+# from my_agent.utils.tools.notify import NotifyTool
 #
 # tools.append(CodeSearchTool(repo_path="./src"))
 # tools.append(BOMLookupTool(database_path="./bom.db"))
