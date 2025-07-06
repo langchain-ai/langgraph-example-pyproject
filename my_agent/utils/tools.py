@@ -3,13 +3,9 @@
 # 1. Internal Document/Spec Search (for docs, specs, BOM, compliance, etc.)
 from langchain_community.tools.file_management import ReadFileTool
 
-# 2. Calculator Tool (BOM math, hardware calculations, quick unit conversions)
-from langchain_community.tools import CalculatorTool
-
 # --- Tool List ---
 tools = [
     ReadFileTool(root_dir="./docs"),   # Change path if your docs live elsewhere
-    CalculatorTool(),
 ]
 
 # --- Expansion Instructions for PMs (comment for maintainers) ---
