@@ -20,7 +20,12 @@ def _get_model(model_name: str):
 def should_continue(state):
     messages = state["messages"]
     last_message = messages[-1]
-    if not last_message.tool_calls:
+    # Works for dict or object; avoids NoneType errors
+    if isinstance(last_message, dict):
+        tool_calls = last_message.get("tool_calls", None)
+    else:
+        tool_calls = getattr(last_message, "tool_calls", None)
+    if not tool_calls:
         return "end"
     else:
         return "continue"
